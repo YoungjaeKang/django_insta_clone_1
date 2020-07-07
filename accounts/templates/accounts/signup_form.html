@@ -1,18 +1,10 @@
 {% extends "accounts/layout.html" %}
-{% load bootstrap4 %}
 
 {% block content %}
-    <div class="container">
+       <div class="container">
         <div class="row">
-            <div class="col-sm-12">
-                <form action="" method="POST" enctype="multipart/form-data">
-                    {%  csrf_token %}
-                    {% bootstrap_form form %}
-{#                    <table>#}
-{#                        {{ form }}#}
-{#                    </table>#}
-                    <input type="submit" />
-                </form>
+            <div class="col-sm-6 offset-sm-2">
+                {% include "_form.html" with submit_label="회원 가입" %}
             </div>
         </div>
     </div>
