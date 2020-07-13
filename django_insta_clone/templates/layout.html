@@ -37,7 +37,10 @@
                             <a class="p-2 text-dark" href="#">
                                 <img class="mr-2" src="{%  static "heart.png" %}" alt="Heart" width="25px"/>
                             </a>
-                            <a class="p-2 text-dark" href="#">Profile</a>
+                            <a class="p-2 text-dark" href="#">
+                                {{ user }}
+                                Profile
+                            </a>
                         </nav>
                         <a class="btn btn-outline-primary" href="#">Sign up</a>
                     </div>
@@ -49,7 +52,7 @@
     {% block content %}
     {% endblock %}
 
-    <div class="border-top">
+    <div class="border-top mt-3">
         <div class="container">
             <footer class="pt-4 my-md-5 pt-md-5">
                 <div class="row">
