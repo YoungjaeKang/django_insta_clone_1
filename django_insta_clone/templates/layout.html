@@ -37,10 +37,9 @@
                             <a class="p-2 text-dark" href="#">
                                 <img class="mr-2" src="{%  static "heart.png" %}" alt="Heart" width="25px"/>
                             </a>
-                            <a class="p-2 text-dark" href="#">
+                            <a class="p-2 text-dark" href="{% url "profile_edit" %}">
                                 {{ user }}
                                 <img src="{% url "pydenticon_image" data=user.username %}" style="width: 24px; height: 24px;" />
-                                Profile
                             </a>
                         </nav>
                         <a class="btn btn-outline-primary" href="#">Sign up</a>

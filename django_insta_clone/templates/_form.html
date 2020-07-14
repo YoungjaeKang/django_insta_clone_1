@@ -7,6 +7,7 @@
     </div>
     {% endif %}
     <div class="card-body">
+        {% if form %}
         <form action="" method="POST" enctype="multipart/form-data">
             {%  csrf_token %}
             {% bootstrap_form form %}
@@ -19,6 +20,12 @@
                 </button>
             {% endbuttons %}
         </form>
+        {% else %}
+                <div class="alert alert-danger">
+                    from 객체를 지정해 주세요 -> 이 부분은 유저에게 보여지는 것은 적합하지 않다.
+                    500에러로 처리해야 맞음.
+                </div>
+        {% endif %}
 
     </div>
 </div>

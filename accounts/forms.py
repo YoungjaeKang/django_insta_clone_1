@@ -24,7 +24,11 @@ class SignupForm(UserCreationForm):
         return email
 
 
-
+# 이거 이렇게 만들면 view단에서 사용할 수 있도록 해야된다.
+class ProfileForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ['first_name', 'last_name', 'website_url', 'bio']
 
 
 # class SignupForm(forms.ModelForm):
