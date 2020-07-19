@@ -17,6 +17,9 @@ class User(AbstractUser):
                                     validators=[RegexValidator(r"^010-?[1-9]\d{3}-?\d{4}$")])
     gender = models.CharField(max_length=1, blank=True,
                               choices=GenderChoices.choices) # default=GenderChoices.MALE
+    avatar = models.ImageField(blank=True, upload_to="accounts/avatar/%Y/%m/%d",
+                               help_text="48px * 48px 크기의 png/jpg 파일을 업로드 해주세요.")
+    # TODO: django imagekit 활용해서 이미지 처리해보기
 
     def send_welcome_email(self):
         subject = render_to_string("accounts/welcome_email_subject.txt", {

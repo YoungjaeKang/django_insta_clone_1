@@ -39,7 +39,11 @@
                             </a>
                             <a class="p-2 text-dark" href="{% url "profile_edit" %}">
                                 {{ user }}
-                                <img src="{% url "pydenticon_image" data=user.username %}" style="width: 24px; height: 24px;" />
+                                {% if user.avatar %}
+                                    <img src="{{ user.avatar.url }}" style="width: 24px; height: 24px;" />
+                                {% else %}
+                                    <img src="{% url "pydenticon_image" data=user.avatar %}" style="width: 24px; height: 24px;" />
+                                {% endif %}
                             </a>
                         </nav>
                         <a class="btn btn-outline-primary" href="#">Sign up</a>
