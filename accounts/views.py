@@ -7,7 +7,6 @@ from django.contrib.auth.views import (
 )
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
-
 from .forms import SignupForm, ProfileForm, PasswordChangeForm
 
 
