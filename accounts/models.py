@@ -21,6 +21,10 @@ class User(AbstractUser):
                                help_text="48px * 48px 크기의 png/jpg 파일을 업로드 해주세요.")
     # TODO: django imagekit 활용해서 이미지 처리해보기
 
+    @property
+    def name(self):
+        return f"{self.first_name} {self.last_name}"
+
     def send_welcome_email(self):
         subject = render_to_string("accounts/welcome_email_subject.txt", {
             "user": self,
