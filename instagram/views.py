@@ -37,6 +37,10 @@ def post_detail(request, pk):
 def user_page(request, username):
     page_user = get_object_or_404(get_user_model(), username=username, is_active=True)
     post_list = Post.objects.filter(author=page_user)
+    post_list_count = post_list.count()
+    # 실제 데이터베이스에 count 쿼리를 던지게 된다.
+    # len(post_list)로 하면 post_list를 가져와서 메모리에 올린 다음에 세기 떄문에 느릴 수 있다.
+    # django debug toolbar에서 sql을 열어보자.
     return render(request, "instagram/user_page.html", {
         "page_user": page_user,
         "post_list": post_list,
