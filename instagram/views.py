@@ -8,8 +8,10 @@ from .models import Post
 
 @login_required
 def index(request):
+    suggested_user_list = get_user_model().objects.all().exclude(pk=request.user.pk)
+    # exclude: 현재 user의 데이터는 제외하겠따.
     return render(request, "instagram/index.html", {
-
+        "suggested_user_list": suggested_user_list,
     })
 
 
@@ -53,3 +55,5 @@ def user_page(request, username):
         "page_user": page_user,
         "post_list": post_list,
     })
+
+
