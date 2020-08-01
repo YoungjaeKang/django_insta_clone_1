@@ -8,8 +8,11 @@ from .models import Post
 
 @login_required
 def index(request):
-    suggested_user_list = get_user_model().objects.all().exclude(pk=request.user.pk)
-    # exclude: 현재 user의 데이터는 제외하겠따.
+    suggested_user_list = get_user_model().objects.all()\
+        .exclude(pk=request.user.pk)\
+        .exclude(pk__in=request.user.following_set.all())[:3]
+    # 첫번째 exclude: 현재 user의 데이터는 제외하겠따.
+    # 두번째 exclude: 이미 follow한 친구는 suggestions for you에서 제외하겠따.
     return render(request, "instagram/index.html", {
         "suggested_user_list": suggested_user_list,
     })

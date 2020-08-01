@@ -9,5 +9,5 @@ urlpatterns = [
     path('edit/', views.profile_edit, name="profile_edit"),
 
     re_path(r'^(?P<username>[\w.@+-]+)/follow/$', views.user_follow, name='user_follow'),
-    re_path(r'^(?P<username>[\w.@+-]+)/unfollow/$', views.user_follow, name='user_unfollow'),
+    re_path(r'^(?P<username>[\w.@+-]+)/unfollow/$', views.user_unfollow, name='user_unfollow'),
 ]
