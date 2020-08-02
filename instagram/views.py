@@ -1,19 +1,26 @@
+from datetime import timedelta
 from django.contrib import messages
 from django.contrib.auth import get_user_model
 from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
+from django.utils import timezone
 from instagram.forms import PostForm
 from .models import Post
 
 
 @login_required
 def index(request):
+    # 등록 날짜를 조건으로 넣을 수도 있다.
+    # timesince = timezone.now() - timedelta(days=3)
     post_list = Post.objects.all()\
                 .filter(
                     Q(author=request.user) |
                     Q(author__in=request.user.following_set.all())
-                )
+                )\
+                # .filter(
+                #     created_at__gte=timesince
+                # )
 
     suggested_user_list = get_user_model().objects.all()\
         .exclude(pk=request.user.pk)\
@@ -53,6 +60,23 @@ def post_detail(request, pk):
     return render(request, "instagram/post_detail.html", {
         "post": post,
     })
+
+
+@login_required
+def post_like(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    post.like_user_set.add(request.user)
+    messages.success(request, f"{post}를 좋아합니다.")
+    redirect_url = request.META.get("HTTP_REFERER", "root")
+    return redirect(redirect_url)
+
+@login_required
+def post_unlike(request, pk):
+    post = get_object_or_404(Post, pk=pk)
+    post.like_user_set.remove(request.user)
+    messages.success(request, f"{post}의 좋아요를 취소합니다.")
+    redirect_url = request.META.get("HTTP_REFERER", "root")
+    return redirect(redirect_url)
 
 
 def user_page(request, username):
