@@ -4,12 +4,24 @@ from django.db import models
 import re
 from django.urls import reverse
 
+
+# class BaseModel(models.Model):
+#     created_at = models.DateTimeField(auto_now_add=True)
+#     updated_at = models.DateTimeField(auto_now=True)
+#
+#     class Meta:
+#         abstract = True
+#     # 이렇게 추상화하고 Post같은 class에서 Post(BaseModel)로 상속받아서 써도 된다.
+
+
 class Post(models.Model):
     author = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     photo = models.ImageField(upload_to="instagram/post/%Y/%m/%d")
     caption = models.CharField(max_length=500)
     tag_set = models.ManyToManyField('Tag', blank=True)
     location = models.CharField(max_length=100)
+    created_at = models.DateTimeField(auto_now_add=True)
+    updated_at = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return self.caption
