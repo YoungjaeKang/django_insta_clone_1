@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post
+from .models import Post, Comment
 
 
 class PostForm(forms.ModelForm):
@@ -10,4 +10,13 @@ class PostForm(forms.ModelForm):
         # 원래 caption이 charfield인데 widgets를 통해 Textarea로 수정 가능
         widgets = {
             'caption': forms.Textarea,
+        }
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ["message"]
+        widgets = {
+            "message": forms.Textarea(attrs={"rows": 2}),
         }

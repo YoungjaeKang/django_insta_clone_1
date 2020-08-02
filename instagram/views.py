@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.db.models import Q
 from django.shortcuts import render, redirect, get_object_or_404
 from django.utils import timezone
-from instagram.forms import PostForm
+from instagram.forms import PostForm, CommentForm
 from .models import Post
 
 
@@ -27,9 +27,13 @@ def index(request):
         .exclude(pk__in=request.user.following_set.all())[:3]
     # 첫번째 exclude: 현재 user의 데이터는 제외하겠따.
     # 두번째 exclude: 이미 follow한 친구는 suggestions for you에서 제외하겠따.
+
+    comment_form = CommentForm()
+
     return render(request, "instagram/index.html", {
         "post_list": post_list,
         "suggested_user_list": suggested_user_list,
+        "comment_form": comment_form,
     })
 
 
@@ -57,8 +61,10 @@ def post_new(request):
 
 def post_detail(request, pk):
     post = get_object_or_404(Post, pk=pk)
+    comment_form = CommentForm()
     return render(request, "instagram/post_detail.html", {
         "post": post,
+        "comment_form": comment_form,
     })
 
 
@@ -77,6 +83,28 @@ def post_unlike(request, pk):
     messages.success(request, f"{post}의 좋아요를 취소합니다.")
     redirect_url = request.META.get("HTTP_REFERER", "root")
     return redirect(redirect_url)
+
+@login_required
+def comment_new(request, post_pk):
+    post = get_object_or_404(Post, pk=post_pk)
+
+    if request.method == 'POST':
+        form = CommentForm(request.POST, request.FILES)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.post = post
+            comment.author = request.user
+            comment.save()
+            if request.is_ajax():
+                return render(request, "instagram/_comment.html", {
+                    "comment": comment,
+                })
+            return redirect(comment.post)
+    else:
+        form = CommentForm()
+    return render(request, "instagram/comment_form.html", {
+        "form": form,
+    })
 
 
 def user_page(request, username):
